@@ -192,23 +192,23 @@ async def weather_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if weather:
             weather_text = weather_service.get_weather_text(weather)
-            
+
             details = (
                 f"\n\n📊 *Details:*\n"
                 f"💧 Humidity: {weather.get('humidity', '?')}%\n"
                 f"💨 Wind: {weather.get('wind_speed', '?')} m/s\n"
                 f"📈 Pressure: {weather.get('pressure', '?')} mmHg"
             )
-            
+
             full_text = f"🌤️ *Weather*\n\n{weather_text}{details}"
-            
+
             if not city:
                 mood, _ = await mood_system.determine_mood()
                 if mood == "sad":
                     full_text += "\n\n😔 The weather is gloomy today... But we'll still find a reason to smile!"
                 else:
                     full_text += "\n\n🎈 Great weather for a party! 🎉"
-            
+
             await status_message.delete()
             await update.message.reply_text(full_text, parse_mode="Markdown")
         else:
@@ -216,7 +216,7 @@ async def weather_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "😅 Oh-oh! I can't get the weather!\n"
                 "Check if the OpenWeatherMap API is configured correctly! 🌧️"
             )
-            
+
     except Exception as e:
         logger.error(f"❌ Error getting weather: {e}")
         await status_message.edit_text(
