@@ -24,10 +24,14 @@ context_manager = ContextManager()
 
 async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles photos."""
+    logger.info("📸 FUNCTION handle_photo CALLED!")
+
     if not is_working_hours():
+        logger.info("⏰ Not working hours, photo ignored")
         return
 
     if not mood_system.should_comment():
+        logger.info("🎲 Decided NOT to comment on photo")
         return
 
     status_message = await update.message.reply_text("🖼️ Looking at the picture... Let me think!")
@@ -38,27 +42,31 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         photo_file = await update.message.photo[-1].get_file()
         image_data = await photo_file.download_as_bytearray()
-        
+
         logger.info(f"📸 Photo received, size: {len(image_data)} bytes")
 
         mood, weather = await mood_system.determine_mood()
         mood_desc = "sad" if mood == "sad" else "happy"
 
+        logger.info("🖼️ Sending request to Vision API...")
         response = await analyze_image(
             image_data=bytes(image_data),
             user_message=user_message,
             mood_description=mood_desc
         )
+        logger.info(f"🖼️ Vision API response: {response[:100] if response else 'None'}")
 
         if not response:
             response = "🖼️ Oh, what a beautiful picture! My eyes are dazzled by such magnificence! 😄"
 
-        weather_keywords = ["weather", "rain", "sun", "cold", "warm", "temperature"]
+        weather_keywords = ["weather", "rain", "sun", "cold", "warm", "temperature", "wind", "degrees"]
         if user_message and any(keyword in user_message.lower() for keyword in weather_keywords):
             weather_text = weather_service.get_weather_text(weather)
             response += f"\n\n{weather_text}"
 
         await status_message.delete()
+
+        logger.info(f"📤 Response sent to user: {response[:100] if response else 'None'}")
 
         if update.message.chat.type == "private":
             await update.message.reply_text(f"🖼️ {response}")
