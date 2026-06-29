@@ -4,7 +4,7 @@ A fun and friendly Telegram bot based on Pinkie Pie from "My Little Pony: Friend
 
 > **Status:** ✅ **Active development**
 >
-> This is an English version of the original Pinkie Pie bot. The Russian version is available at [Pinkie_Pie_Bot_Telegram_Rus](https://github.com).
+> This is an English version of the original Pinkie Pie bot. The Russian version is available at [Pinkie_Pie_Bot_Telegram_Rus](https://github.com/MADAO81/Pinkie_Pie_Bot_Telegram_Rus).
 >
 > 👨‍💻 *Author: MADAO81*
 
@@ -74,7 +74,7 @@ Pinkie Pie is an interactive bot that:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com
+git clone https://github.com/MADAO81/Pinkie_Pie_Bot_English.git
 cd Pinkie_Pie_Bot_English
 ```
 
@@ -98,10 +98,10 @@ pip install -r requirements.txt
 Copy `.env.example` to `.env` and fill in your keys:
 
 ```env
-# Telegram
+# Telegram (required)
 TELEGRAM_TOKEN=your_bot_token_from_BotFather
 
-# OpenAI
+# OpenAI (required)
 OPENAI_API_KEY=your_openai_api_key
 OPENAI_MODEL=gpt-4-turbo
 
@@ -156,8 +156,8 @@ Pinkie_Pie_Bot_English/
 │   │
 │   ├── handlers/             # Handlers
 │   │   ├── __init__.py
-│   │   ├── commands.py       # /start, /help, /recipe, /joke, /song, /weather, /subscribe, /unsubscribe
-│   │   ├── admin.py          # /addrecipe, /listrecipes, /delrecipe, /listchats
+│   │   ├── commands.py       # User commands
+│   │   ├── admin.py          # Admin commands
 │   │   ├── messages.py       # Text messages
 │   │   ├── photos.py         # Photo handling (Vision API)
 │   │   └── voice.py          # Voice handling (Whisper)
@@ -220,7 +220,7 @@ Examples:
 
 - SQLite database with 100+ baking recipes.
 - Fallback recipes in code (in case of database errors).
-- **Categories:** cakes, pastries, cookies, muffins, pies, desserts, other.
+- Categories: cakes, pastries, cookies, muffins, pies, desserts, other.
 - Daily recipe at 12:00 via `/subscribe`.
 
 ---
@@ -230,7 +230,7 @@ Examples:
 ### 🎯 Group Message Reactions
 
 | Situation | Behavior |
-|:---|:---|
+|-----------|----------|
 | Bot mention (`@username`) | ✅ Always responds |
 | Reply to bot's message | ✅ Always responds |
 | Regular message (no mention) | ✅ 20% probability |
@@ -239,19 +239,19 @@ Examples:
 ### 🎯 Media Reactions
 
 | Type | Response Probability |
-|:---|:---|
+|------|----------------------|
 | Photos | 20% |
 | Voice messages | 20% |
 
 ### ⏰ Working Hours
-* **Monday — Sunday:** 9:00 — 20:00
-* Outside working hours: ignores group messages. In private messages replies: *"I'm resting, come back tomorrow!"*
+* Monday — Sunday: 9:00 — 20:00
+* Outside working hours: ignores group messages. In private messages replies: "I'm resting, come back tomorrow!"
 
 ### 🌤️ Mood System
 Pinkie Pie's mood depends on weather in Vorsino (Borovsky District):
 
 | Weather | Sadness Probability | State |
-|:---|:---:|:---|
+|---------|---------------------|-------|
 | ☀️ Clear, sunny | 0% | 🎈 Pinkie Pie (happy) |
 | ⛅ Cloudy | 0% | 🎈 Pinkie Pie (happy) |
 | 🌧️ Rain, overcast | 20% | 😔 Pinkamena Diane Pie (sad) |
@@ -301,9 +301,9 @@ MIT License — free use with attribution.
 MADAO81 — development and support.
 
 ## 🙏 Acknowledgements
-* **python-telegram-bot** — Telegram Bot API library
-* **OpenAI** — GPT-4-turbo, Vision API, Whisper
-* **Open-Meteo** — free weather API (no key required)
-* **SprintBox** — deployment platform
+* python-telegram-bot — Telegram Bot API library
+* OpenAI — GPT-4-turbo, Vision API, Whisper
+* Open-Meteo — free weather API (no key required)
+* SprintBox — deployment platform
 
-🎈 *Made with love and friendship!*
+🎈 Made with love and friendship!
