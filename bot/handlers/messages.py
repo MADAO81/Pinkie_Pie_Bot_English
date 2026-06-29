@@ -33,18 +33,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # === CHECK IF WE SHOULD RESPOND ===
     if update.message.chat.type == "private":
-        pass  # Always respond in private
+        pass
     else:
         bot_username = context.bot.username
         is_mentioned = False
-        
+
         if update.message.text and f"@{bot_username}" in update.message.text.lower():
             is_mentioned = True
-        
+
         if update.message.reply_to_message:
             if update.message.reply_to_message.from_user.username == bot_username:
                 is_mentioned = True
-        
+
         if not is_mentioned:
             if random.random() >= 0.2:
                 logger.info(f"⏭️ Skipping message (not mentioned, 80% probability)")
@@ -63,23 +63,22 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         is_weather_query = any(keyword in user_message.lower() for keyword in weather_keywords)
 
         if is_weather_query:
-            # Try to find city in message
             city = None
-            
+
             patterns = [
                 r'in\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
                 r'weather\s+in\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
                 r'weather\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
                 r'for\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
             ]
-            
+
             for pattern in patterns:
                 match = re.search(pattern, user_message, re.IGNORECASE)
                 if match:
                     city = match.group(1).strip()
                     city = re.sub(r'[.,!?;:]+$', '', city)
                     break
-            
+
             if city and city.lower() not in ["vorsino", "borovsk"]:
                 logger.info(f"🌍 Weather requested for: {city}")
                 weather = await weather_service.get_weather_by_city(city)
@@ -95,7 +94,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     response = f"🌤️ *Weather in Vorsino*\n\n{weather_text}"
                 else:
                     response = "😅 I can't get the weather! Try again later! 🌧️"
-            
+
             await status_message.delete()
             await update.message.reply_text(response, parse_mode="Markdown")
             return
