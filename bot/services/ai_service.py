@@ -81,6 +81,7 @@ async def analyze_image(
     mood_description: str = "happy"
 ) -> Optional[str]:
     """Analyzes an image using OpenAI Vision API."""
+    logger.info("🖼️ Request to OpenAI Vision API...")
     try:
         client = AsyncOpenAI(api_key=Config.OPENAI_API_KEY)
 
@@ -90,28 +91,32 @@ async def analyze_image(
 
         base64_image = base64.b64encode(image_data).decode('utf-8')
 
-        content = [
+        messages = [
             {
-                "type": "text",
-                "text": f"User sent an image. {user_message if user_message else 'Describe what you see in the image and comment on it in your style.'}"
+                "role": "system",
+                "content": system_prompt
             },
             {
-                "type": "image_url",
-                "image_url": {
-                    "url": f"data:image/jpeg;base64,{base64_image}"
-                }
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"User sent an image. {user_message if user_message else 'Describe what you see in the image and comment on it in your style.'}"
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}"
+                        }
+                    }
+                ]
             }
         ]
 
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": content}
-        ]
-
-        logger.info("🖼️ Request to OpenAI Vision API...")
+        logger.info("🖼️ Sending request to OpenAI Vision API...")
 
         response = await client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-4o",
             messages=messages,
             max_tokens=500,
             temperature=0.8,
@@ -124,9 +129,6 @@ async def analyze_image(
             logger.warning("⚠️ Vision API returned empty response")
             return None
 
-    except ImportError:
-        logger.error("❌ openai library not installed")
-        return None
     except Exception as e:
         logger.error(f"❌ Error analyzing image: {e}")
         return None
