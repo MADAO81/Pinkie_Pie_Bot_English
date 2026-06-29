@@ -96,7 +96,10 @@ def main():
     start_scheduler(app)
 
     logger.info("✅ Bot successfully started and ready!")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    app.run_polling(
+        allowed_updates=Update.ALL_TYPES,
+        drop_pending_updates=True
+    )
 
 
 if __name__ == "__main__":
