@@ -78,3 +78,14 @@ class ContextManager:
             conn.close()
         except Exception as e:
             print(f"Error saving context: {e}")
+
+    def clear_context(self, user_id: int):
+        """Clears conversation history for a user."""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM conversations WHERE user_id = ?", (user_id,))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            print(f"Error clearing context: {e}")
