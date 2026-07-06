@@ -53,7 +53,8 @@ COMMANDS = {
     "song": "Sing a cheerful song 🎵",
     "weather": "Weather in any city 🌤️",
     "subscribe": "Subscribe to daily recipes 🧁",
-    "unsubscribe": "Unsubscribe from daily recipes 😢"
+    "unsubscribe": "Unsubscribe from daily recipes 😢",
+    "cleardata": "Clear your conversation history 🗑️"
 }
 
 # ========== VERSION ==========
