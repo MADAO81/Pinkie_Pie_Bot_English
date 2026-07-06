@@ -2,9 +2,14 @@
 
 A fun and friendly Telegram bot based on Pinkie Pie from "My Little Pony: Friendship is Magic".
 
+![Python Version](https://shields.io)
+![License](https://shields.io)
+![Platform](https://shields.io)
+![AI](https://shields.io)
+
 > **Status:** ✅ **Active development**
 >
-> This is an English version of the original Pinkie Pie bot. The Russian version is available at [Pinkie_Pie_Bot_Telegram_Rus](https://github.com/MADAO81/Pinkie_Pie_Bot_Telegram_Rus).
+> This is an English version of the original Pinkie Pie bot. The Russian version is available at [Pinkie_Pie_Bot_Telegram_Rus](https://github.com).
 >
 > 👨‍💻 *Author: MADAO81*
 
@@ -48,6 +53,8 @@ Pinkie Pie is an interactive bot that:
 
 ## 📋 Commands
 
+### User Commands
+
 | Command | Description |
 |---------|-------------|
 | `/start` | Welcome message |
@@ -77,7 +84,7 @@ Pinkie Pie is an interactive bot that:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/MADAO81/Pinkie_Pie_Bot_English.git
+git clone https://github.com
 cd Pinkie_Pie_Bot_English
 ```
 
@@ -100,7 +107,8 @@ pip install -r requirements.txt
 
 Copy `.env.example` to `.env` and fill in your keys:
 
-``# Telegram (required)
+```env
+# Telegram (required)
 TELEGRAM_TOKEN=your_bot_token_from_BotFather
 
 # OpenAI (required)
@@ -207,17 +215,15 @@ Pinkie_Pie_Bot_English/
 ## 🌤️ Weather
 
 ### Default Location (Vorsino)
-* **Coordinates:** 55.0965, 36.6355
-* Pinkie Pie's mood depends on weather in Vorsino.
-* Probability of sadness in bad weather: 20%.
+- **Coordinates:** 55.0965, 36.6355
+- Pinkie Pie's mood depends on weather in Vorsino.
+- Probability of sadness in bad weather: 20%.
 
 ### Any City
-Supports queries in English.
-
-Examples:
-* `/weather London`
-* `/weather New York`
-* `/weather Tokyo`
+Supports queries in English. Examples:
+- `/weather London`
+- `/weather New York`
+- `/weather Tokyo`
 
 ---
 
@@ -225,7 +231,7 @@ Examples:
 
 - SQLite database with 100+ baking recipes.
 - Fallback recipes in code (in case of database errors).
-- Categories: cakes, pastries, cookies, muffins, pies, desserts, other.
+- **Categories:** cakes, pastries, cookies, muffins, pies, desserts, other.
 - Daily recipe at 12:00 via `/subscribe`.
 
 ---
@@ -249,17 +255,23 @@ Examples:
 | Voice messages | 20% |
 
 ### ⏰ Working Hours
-* Monday — Sunday: 9:00 — 20:00
-* Outside working hours: ignores group messages. In private messages replies: "I'm resting, come back tomorrow!"
+- **Monday — Sunday:** 9:00 — 20:00
+- Outside working hours: ignores group messages. In private chat replies: *"I'm resting, come back tomorrow!"*
 
-### 🔒 Privacy & Data
-* Bot saves conversation history only to maintain chat context
-* Data is stored locally on the server in SQLite
-* No data is shared with third parties
-* Users can delete their history with /cleardata
-* Privacy notice is shown in /start and /help
+---
 
-### 🌤️ Mood System
+## 🔒 Privacy & Data
+
+- Bot saves conversation history only to maintain chat context.
+- Data is stored locally on the server in SQLite.
+- No data is shared with third parties.
+- Users can delete their history with `/cleardata`.
+- Privacy notice is shown in `/start and `/help`.
+
+---
+
+## 🌤️ Mood System
+
 Pinkie Pie's mood depends on weather in Vorsino (Borovsky District):
 
 | Weather | Sadness Probability | State |
@@ -302,12 +314,16 @@ systemctl start pinkie-bot
 ```
 
 ### Monitoring & Auto-restart
-A cron script checks the bot every 5 minutes and restarts it if unresponsiv
+A cron script checks the bot every 5 minutes and restarts it if unresponsive:
 
 ```bash
+# View watchdog logs
 cat /var/log/bot_watchdog.log
+
+# Manual check
 /root/check_bot.sh
 ```
+
 ---
 
 ## 🐛 Reporting Issues
@@ -320,9 +336,9 @@ MIT License — free use with attribution.
 MADAO81 — development and support.
 
 ## 🙏 Acknowledgements
-* python-telegram-bot — Telegram Bot API library
-* OpenAI — GPT-4-turbo, Vision API, Whisper
-* Open-Meteo — free weather API (no key required)
-* SprintBox — deployment platform
+- **python-telegram-bot** — Telegram Bot API library
+- **OpenAI** — GPT-4-turbo, Vision API, Whisper
+- **Open-Meteo** — free weather API (no key required)
+- **SprintBox** — deployment platform
 
-🎈 Made with love and friendship!
+🎈 *Made with love and friendship!*
