@@ -64,26 +64,29 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if is_weather_query:
             city = None
+            city_raw = None
 
             patterns = [
-                r'in\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
-                r'weather\s+in\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
-                r'weather\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
-                r'for\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
+                r'[Ii]n\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
+                r'[Ww]eather\s+[Ii]n\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
+                r'[Ww]eather\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
+                r'[Ff]or\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
+                r'[Tt]emperature\s+[Ii]n\s+([A-Za-z\s\-]+?)(?:\s|,|\.|$|\))',
             ]
 
             for pattern in patterns:
                 match = re.search(pattern, user_message, re.IGNORECASE)
                 if match:
-                    city = match.group(1).strip()
-                    city = re.sub(r'[.,!?;:]+$', '', city)
+                    city_raw = match.group(1).strip()
+                    city_raw = re.sub(r'[.,!?;:]+$', '', city_raw)
+                    city = city_raw
                     break
 
             if city and city.lower() not in ["vorsino", "borovsk"]:
                 logger.info(f"🌍 Weather requested for: {city}")
                 weather = await weather_service.get_weather_by_city(city)
                 if weather:
-                    weather_text = weather_service.get_weather_text(weather)
+                    weather_text = weather_service.get_weather_text(weather, city)
                     response = f"🌤️ *Weather in {city}*\n\n{weather_text}"
                 else:
                     response = f"😅 I can't find city '{city}'! Try writing the name correctly. 🌧️"
