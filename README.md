@@ -24,7 +24,8 @@ Pinkie Pie is an interactive bot that:
 - 🖼️ Analyzes images (GPT-4 Vision) with 20% probability
 - 🧁 Daily recipe subscriptions
 - ⏰ Working hours: 9:00–20:00
-- 💾 Stores conversation history (30 days)
+- 💾 Stores conversation history (30 days) with clear option
+- 🔒 Privacy notice and `/cleardata` command
 
 ---
 
@@ -41,6 +42,7 @@ Pinkie Pie is an interactive bot that:
 | Language | Python 3.11+ |
 | Database | SQLite |
 | Deployment | SprintBox (systemd) |
+| Monitoring | Cron + watchdog script (auto-restart on hang) |
 
 ---
 
@@ -57,6 +59,7 @@ Pinkie Pie is an interactive bot that:
 | `/weather London` | Weather in any city |
 | `/subscribe` | Subscribe to daily recipes |
 | `/unsubscribe` | Unsubscribe from daily recipes |
+| `/cleardata` | Clear your conversation history 🗑️ |
 
 ### 👑 Admin Commands (for the owner)
 
@@ -97,8 +100,7 @@ pip install -r requirements.txt
 
 Copy `.env.example` to `.env` and fill in your keys:
 
-```env
-# Telegram (required)
+``# Telegram (required)
 TELEGRAM_TOKEN=your_bot_token_from_BotFather
 
 # OpenAI (required)
@@ -121,6 +123,9 @@ ADMIN_ID=your_telegram_id
 
 # Default chats for daily recipes
 DEFAULT_CHATS=-1001234567890,123456789
+
+# Debug mode
+DEBUG_MODE=false
 ```
 
 ### 5. Create recipe database
@@ -247,6 +252,13 @@ Examples:
 * Monday — Sunday: 9:00 — 20:00
 * Outside working hours: ignores group messages. In private messages replies: "I'm resting, come back tomorrow!"
 
+### 🔒 Privacy & Data
+* Bot saves conversation history only to maintain chat context
+* Data is stored locally on the server in SQLite
+* No data is shared with third parties
+* Users can delete their history with /cleardata
+* Privacy notice is shown in /start and /help
+
 ### 🌤️ Mood System
 Pinkie Pie's mood depends on weather in Vorsino (Borovsky District):
 
@@ -289,6 +301,13 @@ git pull origin main
 systemctl start pinkie-bot
 ```
 
+### Monitoring & Auto-restart
+A cron script checks the bot every 5 minutes and restarts it if unresponsiv
+
+```bash
+cat /var/log/bot_watchdog.log
+/root/check_bot.sh
+```
 ---
 
 ## 🐛 Reporting Issues
