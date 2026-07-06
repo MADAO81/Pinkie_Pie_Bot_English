@@ -25,7 +25,8 @@ from bot.handlers.commands import (
     song_command,
     weather_command,
     subscribe_command,
-    unsubscribe_command
+    unsubscribe_command,
+    clear_data
 )
 from bot.handlers.admin import (
     add_recipe_command,
@@ -44,6 +45,10 @@ logging.basicConfig(
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
+
+if Config.DEBUG_MODE:
+    logging.getLogger().setLevel(logging.DEBUG)
+    logger.info("🐛 DEBUG_MODE enabled")
 
 
 def main():
@@ -81,6 +86,7 @@ def main():
     app.add_handler(CommandHandler("weather", weather_command))
     app.add_handler(CommandHandler("subscribe", subscribe_command))
     app.add_handler(CommandHandler("unsubscribe", unsubscribe_command))
+    app.add_handler(CommandHandler("cleardata", clear_data))
 
     app.add_handler(CommandHandler("addrecipe", add_recipe_command))
     app.add_handler(CommandHandler("listrecipes", list_recipes_command))
