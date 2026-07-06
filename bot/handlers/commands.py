@@ -1,7 +1,7 @@
 # bot/handlers/commands.py
 """
 Command handlers for Pinkie Pie bot:
-/start, /help, /recipe, /joke, /song, /weather, /subscribe, /unsubscribe
+/start, /help, /recipe, /joke, /song, /weather, /subscribe, /unsubscribe, /cleardata
 
 Author: MADAO81
 Version: 2.0
@@ -17,12 +17,14 @@ from bot.services.weather_service import WeatherService
 from bot.utils.time_utils import is_working_hours, get_working_status_message
 from bot.core.constants import VERSION
 from bot.core.scheduler import add_chat, remove_chat
+from bot.core.context_manager import ContextManager
 
 logger = logging.getLogger(__name__)
 
 mood_system = MoodSystem()
 recipe_service = RecipeService()
 weather_service = WeatherService()
+context_manager = ContextManager()
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -47,7 +49,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"/song — listen to a song 🎵\n"
         f"/weather — check the weather 🌤️\n"
         f"/subscribe — get daily recipes 🧁\n"
-        f"/unsubscribe — stop daily recipes 😢\n\n"
+        f"/unsubscribe — stop daily recipes 😢\n"
+        f"/cleardata — clear your conversation history 🗑️\n\n"
+        f"🔒 *Privacy notice:* I save conversation history only to keep the chat context. "
+        f"Data is not shared with third parties. Use /cleardata to delete your history.\n\n"
         f"Just write me something and we'll chat! 💖\n\n"
         f"🤖 *Version:* {VERSION}"
     )
@@ -71,7 +76,10 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/song — song from Pinkie Pie 🎵\n"
         "/weather — weather in any city 🌤️\n"
         "/subscribe — daily recipes 🧁\n"
-        "/unsubscribe — stop recipes 😢\n\n"
+        "/unsubscribe — stop recipes 😢\n"
+        "/cleardata — clear your conversation history 🗑️\n\n"
+        "🔒 *Privacy notice:* I save conversation history only to keep the chat context. "
+        "Data is not shared with third parties. Use /cleardata to delete your history.\n\n"
         "✨ *Features:*\n"
         "• I work daily from 9:00 to 20:00\n"
         "• If it rains — I might get a little sad 🌧️\n"
@@ -244,5 +252,16 @@ async def unsubscribe_command(update: Update, context: ContextTypes.DEFAULT_TYPE
     await update.message.reply_text(
         "😢 *You've unsubscribed from daily recipes!*\n\n"
         "If you want to come back — send /subscribe 🧁",
+        parse_mode="Markdown"
+    )
+
+
+async def clear_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handler for /cleardata command."""
+    user_id = update.effective_user.id
+    context_manager.clear_context(user_id)
+    await update.message.reply_text(
+        "🗑️ *Your conversation history has been deleted!*\n\n"
+        "I don't remember anything about our chat now. But we can always start fresh! 😊🎈",
         parse_mode="Markdown"
     )
