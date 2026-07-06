@@ -46,6 +46,9 @@ class Config:
     # ========== ADMIN ==========
     ADMIN_ID = os.getenv("ADMIN_ID")
 
+    # ========== DEBUG ==========
+    DEBUG_MODE = os.getenv("DEBUG_MODE", "false").lower() == "true"
+
     # ========== PATHS ==========
     BASE_DIR = Path(__file__).parent.parent
     DATA_DIR = BASE_DIR / "data"
