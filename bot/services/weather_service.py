@@ -3,7 +3,7 @@
 Weather service using Open-Meteo (free, no API key).
 
 Author: MADAO81
-Version: 2.0
+Version: 2.1
 """
 
 import logging
@@ -192,7 +192,7 @@ class WeatherService:
             return False
         return weather_data.get("is_bad", False)
 
-    def get_weather_text(self, weather_data: Optional[Dict]) -> str:
+    def get_weather_text(self, weather_data: Optional[Dict], city_display: Optional[str] = None) -> str:
         """Returns text description of weather."""
         if not weather_data:
             return "🌤️ Weather: unknown"
@@ -200,7 +200,8 @@ class WeatherService:
         temp = weather_data.get("temperature", 0)
         description = weather_data.get("description", "unknown")
         wind = weather_data.get("wind_speed", 0)
-        city = weather_data.get("city_name", "unknown")
+        
+        city = city_display if city_display else weather_data.get("city_name", "unknown")
 
         emoji = "☀️" if not weather_data.get("is_bad", False) else "🌧️"
 
